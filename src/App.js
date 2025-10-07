@@ -641,7 +641,7 @@ const PostInternshipDialog = ({ open, onClose, onPost }) => {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+    <Dialog open={open} onClose={onClose} maxWidth="xl" fullWidth>
       <DialogTitle>
         Post New Internship
         <IconButton
@@ -652,12 +652,13 @@ const PostInternshipDialog = ({ open, onClose, onPost }) => {
         </IconButton>
       </DialogTitle>
       <DialogContent dividers>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
+                  <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
               Internship Details
             </Typography>
           </Grid>
+        <Grid container spacing={2}>
+
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -751,12 +752,7 @@ const PostInternshipDialog = ({ open, onClose, onPost }) => {
               label="This is a remote position"
             />
           </Grid>
-          <Grid item xs={12}>
-            <Divider sx={{ my: 1 }} />
-            <Typography variant="h6" gutterBottom>
-              Job Description
-            </Typography>
-          </Grid>
+
           <Grid item xs={12}>
             <TextField
               fullWidth
