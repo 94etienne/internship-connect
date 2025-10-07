@@ -27,15 +27,11 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  FormControl,
-  InputLabel,
-  Select,
   MenuItem,
   FormControlLabel,
   Checkbox,
   Alert,
   Snackbar,
-  Avatar,
   Divider,
   Paper,
   Table,
@@ -54,7 +50,6 @@ import {
   Search as SearchIcon,
   FilterList as FilterIcon,
   Add as AddIcon,
-  Edit as EditIcon,
   Bookmark as BookmarkIcon,
   BookmarkBorder as BookmarkBorderIcon,
   Send as SendIcon,
@@ -1229,7 +1224,7 @@ function App() {
             </IconButton>
             <WorkIcon sx={{ mr: 2 }} />
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Internship Connect
+              Computer Innovation Technology ltd
             </Typography>
             <Button color="inherit" onClick={() => setProfileDialogOpen(true)}>
               Profile
