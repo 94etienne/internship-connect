@@ -594,6 +594,239 @@ const ProfileDialog = ({ open, onClose, profile, onSave }) => {
   );
 };
 
+const PostInternshipDialog = ({ open, onClose, onPost }) => {
+  const [formData, setFormData] = useState({
+    title: '',
+    company: '',
+    location: '',
+    type: '',
+    duration: '',
+    stipend: '',
+    description: '',
+    requirements: '',
+    skills: '',
+    applicationDeadline: '',
+    numberOfPositions: '1',
+    contactEmail: '',
+    isRemote: false,
+  });
+
+  const handleChange = (field, value) => {
+    setFormData({ ...formData, [field]: value });
+  };
+
+  const handleSubmit = () => {
+    const newInternship = {
+      ...formData,
+      id: Date.now(),
+      postedDate: new Date().toISOString(),
+      skills: formData.skills.split(',').map(s => s.trim()),
+    };
+    onPost(newInternship);
+    setFormData({
+      title: '',
+      company: '',
+      location: '',
+      type: '',
+      duration: '',
+      stipend: '',
+      description: '',
+      requirements: '',
+      skills: '',
+      applicationDeadline: '',
+      numberOfPositions: '1',
+      contactEmail: '',
+      isRemote: false,
+    });
+  };
+
+  return (
+    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+      <DialogTitle>
+        Post New Internship
+        <IconButton
+          onClick={onClose}
+          sx={{ position: 'absolute', right: 8, top: 8 }}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent dividers>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Typography variant="h6" gutterBottom>
+              Internship Details
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              required
+              label="Job Title"
+              placeholder="e.g., Frontend Developer Intern"
+              value={formData.title}
+              onChange={(e) => handleChange('title', e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              required
+              label="Company Name"
+              value={formData.company}
+              onChange={(e) => handleChange('company', e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              required
+              label="Location"
+              placeholder="e.g., New York, NY or Remote"
+              value={formData.location}
+              onChange={(e) => handleChange('location', e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              fullWidth
+              required
+              select
+              label="Internship Type"
+              value={formData.type}
+              onChange={(e) => handleChange('type', e.target.value)}
+            >
+              <MenuItem value="">Select Type</MenuItem>
+              <MenuItem value="Full-time">Full-time</MenuItem>
+              <MenuItem value="Part-time">Part-time</MenuItem>
+            </TextField>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              fullWidth
+              required
+              label="Duration"
+              placeholder="e.g., 3 months"
+              value={formData.duration}
+              onChange={(e) => handleChange('duration', e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              fullWidth
+              required
+              label="Stipend"
+              placeholder="e.g., $2,000/month"
+              value={formData.stipend}
+              onChange={(e) => handleChange('stipend', e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Application Deadline"
+              type="date"
+              InputLabelProps={{ shrink: true }}
+              value={formData.applicationDeadline}
+              onChange={(e) => handleChange('applicationDeadline', e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Number of Positions"
+              type="number"
+              value={formData.numberOfPositions}
+              onChange={(e) => handleChange('numberOfPositions', e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={formData.isRemote}
+                  onChange={(e) => handleChange('isRemote', e.target.checked)}
+                />
+              }
+              label="This is a remote position"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Divider sx={{ my: 1 }} />
+            <Typography variant="h6" gutterBottom>
+              Job Description
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              required
+              multiline
+              rows={4}
+              label="Description"
+              placeholder="Describe the internship role, responsibilities, and what the intern will learn..."
+              value={formData.description}
+              onChange={(e) => handleChange('description', e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              required
+              multiline
+              rows={3}
+              label="Requirements"
+              placeholder="List the qualifications, education requirements, and experience needed..."
+              value={formData.requirements}
+              onChange={(e) => handleChange('requirements', e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              required
+              label="Required Skills"
+              placeholder="e.g., React, JavaScript, CSS (comma-separated)"
+              value={formData.skills}
+              onChange={(e) => handleChange('skills', e.target.value)}
+              helperText="Separate skills with commas"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Divider sx={{ my: 1 }} />
+            <Typography variant="h6" gutterBottom>
+              Contact Information
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              required
+              label="Contact Email"
+              type="email"
+              placeholder="hr@company.com"
+              value={formData.contactEmail}
+              onChange={(e) => handleChange('contactEmail', e.target.value)}
+              helperText="Applications will be sent to this email"
+            />
+          </Grid>
+        </Grid>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>Cancel</Button>
+        <Button 
+          variant="contained" 
+          onClick={handleSubmit}
+          startIcon={<AddIcon />}
+          disabled={!formData.title || !formData.company || !formData.description}
+        >
+          Post Internship
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
 const CompanyDialog = ({ open, onClose, company, onSave }) => {
   const [formData, setFormData] = useState(company || {
     companyName: '',
@@ -727,10 +960,12 @@ function App() {
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
   const [profileDialogOpen, setProfileDialogOpen] = useState(false);
   const [companyDialogOpen, setCompanyDialogOpen] = useState(false);
+  const [postInternshipDialogOpen, setPostInternshipDialogOpen] = useState(false);
   const [selectedInternship, setSelectedInternship] = useState(null);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [savedInternships, setSavedInternships] = useState([]);
   const [applications, setApplications] = useState([]);
+  const [internships, setInternships] = useState(sampleInternships);
   const [userProfile, setUserProfile] = useState({
     fullName: 'John Doe',
     email: 'john.doe@example.com',
@@ -817,6 +1052,16 @@ function App() {
     });
   };
 
+  const handlePostInternship = (internshipData) => {
+    setInternships([internshipData, ...internships]);
+    setPostInternshipDialogOpen(false);
+    setSnackbar({
+      open: true,
+      message: 'Internship posted successfully!',
+      severity: 'success',
+    });
+  };
+
   const drawer = (
     <Box sx={{ width: 250 }} role="presentation">
       <List>
@@ -842,6 +1087,13 @@ function App() {
           </ListItemIcon>
           <ListItemText primary="Saved Internships" />
         </ListItem>
+        <Divider sx={{ my: 1 }} />
+        <ListItem button onClick={() => setPostInternshipDialogOpen(true)}>
+          <ListItemIcon>
+            <AddIcon />
+          </ListItemIcon>
+          <ListItemText primary="Post Internship" />
+        </ListItem>
         <ListItem button onClick={() => setProfileDialogOpen(true)}>
           <ListItemIcon>
             <PersonIcon />
@@ -862,9 +1114,21 @@ function App() {
     if (tabValue === 0) {
       return (
         <>
+          <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography variant="h5">
+              Available Internships ({internships.length})
+            </Typography>
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              onClick={() => setPostInternshipDialogOpen(true)}
+            >
+              Post Internship
+            </Button>
+          </Box>
           <SearchFilters />
           <Grid container spacing={3}>
-            {sampleInternships.map((internship) => (
+            {internships.map((internship) => (
               <Grid item key={internship.id} xs={12} sm={6} lg={4}>
                 <InternshipCard
                   internship={internship}
@@ -922,7 +1186,7 @@ function App() {
         </TableContainer>
       );
     } else if (tabValue === 2) {
-      const saved = sampleInternships.filter(i => savedInternships.includes(i.id));
+      const saved = internships.filter(i => savedInternships.includes(i.id));
       return (
         <Grid container spacing={3}>
           {saved.length === 0 ? (
@@ -969,7 +1233,7 @@ function App() {
             </IconButton>
             <WorkIcon sx={{ mr: 2 }} />
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              C.I.T
+              Internship Connect
             </Typography>
             <Button color="inherit" onClick={() => setProfileDialogOpen(true)}>
               Profile
@@ -1045,6 +1309,12 @@ function App() {
         open={companyDialogOpen}
         onClose={() => setCompanyDialogOpen(false)}
         onSave={handleSaveCompany}
+      />
+
+      <PostInternshipDialog
+        open={postInternshipDialogOpen}
+        onClose={() => setPostInternshipDialogOpen(false)}
+        onPost={handlePostInternship}
       />
 
       <Snackbar
